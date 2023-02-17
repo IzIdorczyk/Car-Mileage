@@ -35,8 +35,7 @@ def read_root():
 
 @app.get("/cars")
 async def get_cars():
-    response = await fetch_all_cars()
-    return response
+    return await fetch_all_cars()
 
 
 @app.get("/car/{plate}", response_model=Car)
@@ -76,8 +75,7 @@ async def delete_car(plate):
 
 @app.get("/cars/mileages")
 async def get_all_mileages():
-    response = await fetch_all_mileages()
-    return response
+    return await fetch_all_mileages()
 
 
 @app.get("/car/{plate}/{year}/{month}", response_model=Mileage)
