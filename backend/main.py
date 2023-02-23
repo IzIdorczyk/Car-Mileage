@@ -17,7 +17,7 @@ from database import (
 # App object
 app = FastAPI()
 
-origins = ['https://localhost:3000']
+origins = ['http://localhost:3000']
 
 app.add_middleware(
     CORSMiddleware,
@@ -46,7 +46,7 @@ async def get_car_by_plate(plate):
     raise HTTPException(404, f"Car with {plate} plate number doesn't exist in our database")
 
 
-@app.post("/cars/", response_model=Car)
+@app.post("/car/", response_model=Car)
 async def post_car(car: Car):
     response = await create_car(car.dict())
     if response:
@@ -54,7 +54,7 @@ async def post_car(car: Car):
     raise HTTPException(400, "Something went wrong or Bad Request")
 
 
-@app.put("/cars/{plate}", response_model=Car)
+@app.put("/car/{plate}", response_model=Car)
 async def put_car(plate:str, new_plate:str):
     response = await update_car(plate, new_plate)
     if response:
@@ -62,7 +62,7 @@ async def put_car(plate:str, new_plate:str):
     raise HTTPException(404, f"Car with {plate} plate number doesn't exist in our database")
 
 
-@app.delete("/cars/{plate}")
+@app.delete("/car/{plate}")
 async def delete_car(plate):
     response = await remove_car(plate)
     if response:
@@ -78,7 +78,7 @@ async def get_all_mileages():
     return await fetch_all_mileages()
 
 
-@app.get("/car/{plate}/{year}/{month}", response_model=Mileage)
+@app.get("/car/{plate}/{year}/{month}/mileage", response_model=Mileage)
 async def get_one_mileage(plate:str, year:int, month:int):
     response = await fetch_one_mileage(plate, year, month)
     if response:
@@ -94,7 +94,7 @@ async def get_mileages_by_plate(plate):
     raise HTTPException(404, f"We don't have any mileage for car with {plate} plate number")
 
 
-@app.post("/car/{plate}/", response_model=Mileage)
+@app.post("/car/{plate}/mileage", response_model=Mileage)
 async def post_mileage(mileage: Mileage):
     response = await create_mileage(mileage.dict())
     if response:
