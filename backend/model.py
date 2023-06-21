@@ -18,14 +18,12 @@ class Mileage(BaseModel):
         }
 
 class Car(BaseModel):
-    brand: str
     model: str
     plate: str
 
     class Config:
         schema_extra = {
             'example': {
-                'brand': 'Skoda',
                 'model': 'Fabia',
                 'plate': 'GD 229TY'
             }
