@@ -33,12 +33,12 @@ def read_root():
     return {"Hello" : "World"}
 
 
-@app.get("/cars")
+@app.get("/cars", tags=['Car'])
 async def get_cars():
     return await fetch_all_cars()
 
 
-@app.get("/car/{plate}", response_model=Car)
+@app.get("/car/{plate}", response_model=Car, tags=['Car'])
 async def get_car_by_plate(plate):
     response = await fetch_one_car(plate)
     if response:
@@ -46,15 +46,19 @@ async def get_car_by_plate(plate):
     raise HTTPException(404, f"Car with {plate} plate number doesn't exist in our database")
 
 
-@app.post("/car/", response_model=Car)
+@app.post("/car/", response_model=Car, tags=['Car'])
 async def post_car(car: Car):
+    if await fetch_one_car(car.plate):
+        raise HTTPException(409, f"Car with {car.plate} plate number already exist in our database")
+    if len(car.plate.split()) < 4:
+        raise HTTPException(411, f"your plate number '{car.plate}' is too short")
     response = await create_car(car.dict())
-    if response:
-        return response
-    raise HTTPException(400, "Something went wrong or Bad Request")
+    if not response:
+        raise HTTPException(400, "Something went wrong or Bad Request")
+    return response
 
 
-@app.put("/car/{plate}", response_model=Car)
+@app.put("/car/{plate}", response_model=Car, tags=['Car'])
 async def put_car(plate:str, new_plate:str):
     response = await update_car(plate, new_plate)
     if response:
@@ -62,7 +66,7 @@ async def put_car(plate:str, new_plate:str):
     raise HTTPException(404, f"Car with {plate} plate number doesn't exist in our database")
 
 
-@app.delete("/car/{plate}")
+@app.delete("/car/{plate}", tags=['Car'])
 async def delete_car(plate):
     response = await remove_car(plate)
     if response:
@@ -73,12 +77,12 @@ async def delete_car(plate):
 ### Mileages
 ###
 
-@app.get("/cars/mileages")
+@app.get("/cars/mileages", tags=['Mileages'])
 async def get_all_mileages():
     return await fetch_all_mileages()
 
 
-@app.get("/car/{plate}/{year}/{month}/mileage", response_model=Mileage)
+@app.get("/car/{plate}/{year}/{month}/mileage", response_model=Mileage, tags=['Mileages'])
 async def get_one_mileage(plate:str, year:int, month:int):
     response = await fetch_one_mileage(plate, year, month)
     if response:
@@ -86,7 +90,7 @@ async def get_one_mileage(plate:str, year:int, month:int):
     raise HTTPException(404, f"Mileage in {month}.{year} from car with {plate} plate number doesn't exist in our database")
 
 
-@app.get("/car/{plate}/mileages")
+@app.get("/car/{plate}/mileages", tags=['Mileages'])
 async def get_mileages_by_plate(plate):
     response = await fetch_all_car_mileages(plate)
     if response:
@@ -94,15 +98,17 @@ async def get_mileages_by_plate(plate):
     raise HTTPException(404, f"We don't have any mileage for car with {plate} plate number")
 
 
-@app.post("/car/{plate}/mileage", response_model=Mileage)
+@app.post("/car/{plate}/mileage", response_model=Mileage, tags=['Mileages'])
 async def post_mileage(mileage: Mileage):
+    if await fetch_one_mileage(mileage.plate, mileage.year, mileage.month):
+        raise HTTPException(409, f"Recodr for car with {mileage.plate} plate number in {mileage.month}.{mileage.year} already exist in our database")
     response = await create_mileage(mileage.dict())
     if response:
         return response
     raise HTTPException(400, "Something went wrong or Bad Request")
 
 
-@app.put("/car/{plate}/{year}/{month}", response_model=Mileage)
+@app.put("/car/{plate}/{year}/{month}", response_model=Mileage, tags=['Mileages'])
 async def put_mileage(plate:str, year:int, month:int, mileage:int):
     response = await update_mileage(plate, year, month, mileage)
     if response:
@@ -110,7 +116,7 @@ async def put_mileage(plate:str, year:int, month:int, mileage:int):
     raise HTTPException(404, f"Mileage in {month}.{year} from car with {plate} plate number doesn't exist in our database")
 
 
-@app.delete("/car/{plate}/{year}/{month}")
+@app.delete("/car/{plate}/{year}/{month}", tags=['Mileages'])
 async def delete_mileage(plate:str, year:int, month:int):
     response = await remove_mileage(plate, year, month)
     if response:

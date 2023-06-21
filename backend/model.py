@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from datetime import datetime
 
 class Mileage(BaseModel):
     plate: str
@@ -6,6 +7,26 @@ class Mileage(BaseModel):
     month: int
     mileage: int
 
+    class Config:
+        schema_extra = {
+            'example': {
+                'plate': 'GD 229TY',
+                'year': datetime.now().year,
+                'month': datetime.now().month,
+                'mileage': 68358
+            }
+        }
+
 class Car(BaseModel):
+    brand: str
     model: str
     plate: str
+
+    class Config:
+        schema_extra = {
+            'example': {
+                'brand': 'Skoda',
+                'model': 'Fabia',
+                'plate': 'GD 229TY'
+            }
+        }
