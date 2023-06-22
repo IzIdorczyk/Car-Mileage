@@ -53,3 +53,15 @@ async def update_mileage(plate, year, month, mileage):
 async def remove_mileage(plate, year, month):
     await mileage_collection.delete_one({"plate":plate, "year":year, "month":month})
     return True
+
+
+#Date
+async def find_all_mileages_in_month(year, month):
+    cars = await fetch_all_cars()
+    mils = []
+    for car in cars:
+        if await fetch_one_mileage(car.plate, year, month):
+            mil = await fetch_one_mileage(car.plate, year, month)
+            mils.append([car.plate, mil['mileage']])
+            # mils.append({car.plate: mil['mileage']})
+    return mils

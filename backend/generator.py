@@ -19,7 +19,7 @@ if rows_needed > cfg['max_days']:
     rows_needed = cfg['max_days']
 
 # =============================
-num_days = monthrange(cfg['year'], cfg['month_nr'],)[1]
+num_days = monthrange(cfg['year'], cfg['month'],)[1]
 dates = sorted(random.sample(range(1, num_days + 1), rows_needed))
 
 # =============================

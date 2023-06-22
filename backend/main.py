@@ -12,7 +12,8 @@ from database import (
     fetch_all_car_mileages,
     create_mileage,
     update_mileage,
-    remove_mileage)
+    remove_mileage,
+    find_all_mileages_in_month)
 
 # App object
 app = FastAPI()
@@ -50,7 +51,7 @@ async def get_car_by_plate(plate):
 async def post_car(car: Car):
     if await fetch_one_car(car.plate):
         raise HTTPException(409, f"Car with {car.plate} plate number already exist in our database")
-    if len(car.plate.split()) < 4:
+    if len(car.plate) < 4:
         raise HTTPException(411, f"your plate number '{car.plate}' is too short")
     response = await create_car(car.dict())
     if not response:
@@ -122,3 +123,38 @@ async def delete_mileage(plate:str, year:int, month:int):
     if response:
         return f"Succesfully deleted mileage in {month}.{year} from car with {plate} plate numbers!"
     raise HTTPException(404, f"Mileage in {month}.{year} from car with {plate} number plate doesn't exist in our database")
+
+
+###
+### Date
+###
+@app.get("/date/{year}/{month}", tags=['Date'])
+async def get_mileages_by_date(year:int, month:int):
+    response = await find_all_mileages_in_month(year, month)
+    if response:
+        return response
+    raise HTTPException(404, f"We don't have any mileage in {month}.{year}")
+
+@app.get("/date/{year}/{month}/generate", tags=['Date'])
+async def generate_mileages_by_date(year:int, month:int):
+    now = await find_all_mileages_in_month(year, month)
+    prev = await find_all_mileages_in_month(year, month-1)
+
+    new = []
+    for n in now:
+        if n[0] in [p[0] for p in prev]:
+            for p in prev:
+                if p[0] == n[0]:
+                    new.append([n[0], p[1], n[1]])
+
+    print(new)
+
+    for x in new:
+
+        car_register_numbers = x[0]
+        first_day_value = x[1]
+        last_day_value = x[2]
+        car = await get_car_by_plate(car_register_numbers)
+        car_name = car['model']
+        # print(car_register_numbers, first_day_value, last_day_value, car_name)
+
