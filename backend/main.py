@@ -14,6 +14,7 @@ from database import (
     update_mileage,
     remove_mileage,
     find_all_mileages_in_month)
+from raport_creator import create_raport
 
 # App object
 app = FastAPI()
@@ -147,7 +148,6 @@ async def generate_mileages_by_date(year:int, month:int):
                 if p[0] == n[0]:
                     new.append([n[0], p[1], n[1]])
 
-    print(new)
 
     for x in new:
 
@@ -156,5 +156,5 @@ async def generate_mileages_by_date(year:int, month:int):
         last_day_value = x[2]
         car = await get_car_by_plate(car_register_numbers)
         car_name = car['model']
-        # print(car_register_numbers, first_day_value, last_day_value, car_name)
+        create_raport(plate =car_register_numbers, model = car_name, first_day_value = first_day_value, last_day_value = last_day_value, month = month, year = year)
 

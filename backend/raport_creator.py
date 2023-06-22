@@ -1,35 +1,16 @@
 import os
 import yaml
+import random
+from calendar import monthrange
 import win32com.client
 from pywintypes import com_error
 
 
 from sheet import sheet, get_month_name
-from generator import generate_distances, rows_needed, dates
 
 
 with open('../backend/config.yml', 'r', encoding='utf8') as file:
     cfg = yaml.safe_load(file)
-
-filename = f"{get_month_name(cfg['month'])} {cfg['year']} {cfg['car_name']} {cfg['car_register_numbers']}"
-filepath = f'../backend/created_files/{filename}.xls'
-filepath_xls = os.path.abspath(filepath)
-filepath_pdf = f'{filepath_xls[:-3]}pdf'
-filepath_xlsx = f'{filepath_xls}x'
-
-
-sheet(  filepath = filepath, page=cfg['page'],
-        pages_needed= cfg['pages_needed'],
-        first_day_date= cfg['first_day_date'],
-        last_day_date= cfg['last_day_date'],
-        car_register_numbers = cfg['car_register_numbers'],
-        first_day_value = cfg['first_day_value'],
-        month= cfg['month'], year = cfg['year'],
-        rows_amount= rows_needed, dates = dates,
-        distances = generate_distances(),
-    )
-
-
 
 
 def excel_to_pdf(excel_path, pdf_path):
@@ -52,8 +33,77 @@ def excel_to_pdf(excel_path, pdf_path):
 
 
 def xls_to_xlsx(xls_path, xlsx_path):
-    os.rename(xls_path, xlsx_path)
+        os.rename(xls_path, xlsx_path)
 
 
-excel_to_pdf(filepath_xls, filepath_pdf)
-xls_to_xlsx(filepath_xls, filepath_xlsx)
+def generate_distances(monthly_distance: int = (cfg['dayly_min'] * cfg['min_days']), days_quantity: int = cfg['min_days'],  min: int = cfg['dayly_min'], max: int = cfg['dayly_max']) -> list:
+
+    distance_left = monthly_distance
+    distances = []
+
+    for _ in range(days_quantity):
+        r = random.randint(min, max)
+        distance_left -= r
+        distances.append(r)
+
+    if distance_left > 0:
+        add_all = int(distance_left / days_quantity) 
+        add_rest = distance_left - (add_all * days_quantity)
+        for i in range(len(distances)):
+            distances[i] += add_all
+        
+        for n in range(add_rest):
+            distances[n] += 1
+        return distances
+    elif distance_left < 0:
+        add_all = int(distance_left / days_quantity) * -1
+        add_rest = (distance_left * -1) - (add_all * days_quantity)
+        for i in range(len(distances)):
+            distances[i] -= add_all
+        
+        for n in range(add_rest):
+            distances[n] -= 1
+        return distances
+    else:
+        return distances
+
+def create_raport(plate: str = 'XX XXXXX', model: str = 'Brand Model', first_day_value: int = 1, last_day_value: int = 1001, month: int = 1, year: int = 2000):
+
+    filename = f"{get_month_name(month)} {year} {model} {plate}"
+    filepath = f'../backend/created_files/{filename}.xls'
+    filepath_xls = os.path.abspath(filepath)
+    filepath_pdf = f'{filepath_xls[:-3]}pdf'
+    filepath_xlsx = f'{filepath_xls}x'
+
+    km_needed = last_day_value - first_day_value
+    rows_needed = km_needed // random.randint(cfg['dayly_min'], cfg['dayly_max'])
+
+    # check if it is out of range
+    # if it is, sets extreme values
+    if rows_needed < cfg['min_days']:
+        rows_needed = cfg['min_days']
+    if rows_needed > cfg['max_days']:
+        rows_needed = cfg['max_days']
+
+    num_days = monthrange(year, month,)[1]
+    dates = sorted(random.sample(range(1, num_days + 1), rows_needed))
+
+    first_day_date = f"1.{month}.{year}"
+    last_day_date = f"{num_days}.{month}.{year}"
+
+    sheet(  filepath = filepath, page=cfg['page'],
+            pages_needed= cfg['pages_needed'],
+            first_day_date= first_day_date,
+            last_day_date= last_day_date,
+            car_register_numbers = plate,
+            first_day_value = first_day_value,
+            month= month,
+            year = year,
+            rows_amount= rows_needed,
+            dates = dates,
+            distances = generate_distances(monthly_distance = km_needed, days_quantity = rows_needed),
+        )
+
+    excel_to_pdf(filepath_xls, filepath_pdf)
+    xls_to_xlsx(filepath_xls, filepath_xlsx)
+

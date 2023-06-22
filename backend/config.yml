@@ -5,12 +5,3 @@ max_days: 28
 start_at: 23
 pages_needed: 1
 page: 1
-year: 2023
-month: 1
-month_txt: Styczeń
-first_day_date : 1.01.2023
-last_day_date : 31.01.2023
-car_register_numbers: GD 004WP
-first_day_value: 96183
-last_day_value: 98462
-car_name: Skoda Fabia
