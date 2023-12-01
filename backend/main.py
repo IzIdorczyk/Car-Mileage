@@ -130,14 +130,14 @@ async def delete_mileage(plate:str, year:int, month:int):
 ### Date
 ###
 @app.get("/date/{year}/{month}", tags=['Date'])
-async def get_mileages_by_date(year:int, month:int):
+async def get_mileages_by_date(month:int, year:int):
     response = await find_all_mileages_in_month(year, month)
     if response:
         return response
     raise HTTPException(404, f"We don't have any mileage in {month}.{year}")
 
 @app.get("/date/{year}/{month}/generate", tags=['Date'])
-async def generate_mileages_by_date(year:int, month:int):
+async def generate_mileages_by_date(month:int, year:int):
     now = await find_all_mileages_in_month(year, month)
     prev = await find_all_mileages_in_month(year, month-1)
 

@@ -1,6 +1,6 @@
 dayly_min: 55
 dayly_max: 130
-min_days: 18
+min_days: 14
 max_days: 28
 start_at: 23
 pages_needed: 1

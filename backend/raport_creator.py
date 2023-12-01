@@ -56,12 +56,12 @@ def generate_distances(monthly_distance: int = (cfg['dayly_min'] * cfg['min_days
             distances[n] += 1
         return distances
     elif distance_left < 0:
-        add_all = int(distance_left / days_quantity) * -1
-        add_rest = (distance_left * -1) - (add_all * days_quantity)
+        sub_all = int(distance_left / days_quantity) * -1
+        sub_rest = (distance_left * -1) - (sub_all * days_quantity)
         for i in range(len(distances)):
-            distances[i] -= add_all
+            distances[i] -= sub_all
         
-        for n in range(add_rest):
+        for n in range(sub_rest):
             distances[n] -= 1
         return distances
     else:
@@ -84,6 +84,13 @@ def create_raport(plate: str = 'XX XXXXX', model: str = 'Brand Model', first_day
         rows_needed = cfg['min_days']
     if rows_needed > cfg['max_days']:
         rows_needed = cfg['max_days']
+
+    while km_needed < (rows_needed * cfg['dayly_min']):
+        print("subtracts a day ...")
+        rows_needed -= 1
+
+    if rows_needed <= 0:
+        return 'err'
 
     num_days = monthrange(year, month,)[1]
     dates = sorted(random.sample(range(1, num_days + 1), rows_needed))
