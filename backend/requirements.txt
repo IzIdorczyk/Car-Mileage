@@ -11,3 +11,5 @@ pyyaml == 6.0
 pywin32 == 306
 
 pypiwin32 == 223
+
+pymongo[srv]==3.11.0

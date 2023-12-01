@@ -3,7 +3,10 @@ from model import Car, Mileage
 # MongoDB driver
 import motor.motor_asyncio
 
-client = motor.motor_asyncio.AsyncIOMotorClient('mongodb://localhost:27017/')
+db_user = 'user'
+db_pass = 'pass'
+
+client = motor.motor_asyncio.AsyncIOMotorClient(f'mongodb+srv://{db_user}:{db_pass}@cluster0.ogc6lvs.mongodb.net/?retryWrites=true&w=majority')
 database = client.CarMileage
 
 # Car collection
