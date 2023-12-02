@@ -5,9 +5,7 @@ from calendar import monthrange
 import win32com.client
 from pywintypes import com_error
 
-
 from sheet import sheet, get_month_name
-
 
 with open('../backend/config.yml', 'r', encoding='utf8') as file:
     cfg = yaml.safe_load(file)
@@ -33,11 +31,12 @@ def excel_to_pdf(excel_path, pdf_path):
 
 
 def xls_to_xlsx(xls_path, xlsx_path):
-        os.rename(xls_path, xlsx_path)
+    os.rename(xls_path, xlsx_path)
 
 
-def generate_distances(monthly_distance: int = (cfg['dayly_min'] * cfg['min_days']), days_quantity: int = cfg['min_days'],  min: int = cfg['dayly_min'], max: int = cfg['dayly_max']) -> list:
-
+def generate_distances(monthly_distance: int = (cfg['dayly_min'] * cfg['min_days']),
+                       days_quantity: int = cfg['min_days'], min: int = cfg['dayly_min'],
+                       max: int = cfg['dayly_max']) -> list:
     distance_left = monthly_distance
     distances = []
 
@@ -47,11 +46,11 @@ def generate_distances(monthly_distance: int = (cfg['dayly_min'] * cfg['min_days
         distances.append(r)
 
     if distance_left > 0:
-        add_all = int(distance_left / days_quantity) 
+        add_all = int(distance_left / days_quantity)
         add_rest = distance_left - (add_all * days_quantity)
         for i in range(len(distances)):
             distances[i] += add_all
-        
+
         for n in range(add_rest):
             distances[n] += 1
         return distances
@@ -60,16 +59,17 @@ def generate_distances(monthly_distance: int = (cfg['dayly_min'] * cfg['min_days
         sub_rest = (distance_left * -1) - (sub_all * days_quantity)
         for i in range(len(distances)):
             distances[i] -= sub_all
-        
+
         for n in range(sub_rest):
             distances[n] -= 1
         return distances
     else:
         return distances
 
-def create_raport(plate: str = 'XX XXXXX', model: str = 'Brand Model', first_day_value: int = 1, last_day_value: int = 1001, month: int = 1, year: int = 2000):
 
-    filename = f"{get_month_name(month)} {year} {model} {plate}"
+def create_report(plate: str = 'XX XXXXX', model: str = 'Brand Model', first_day_value: int = 1,
+                  last_day_value: int = 1001, month: int = 1, year: int = 2000):
+    filename = f"{get_month_name(month)}{year}{model}{plate}"
     filepath = f'../backend/created_files/{filename}.xls'
     filepath_xls = os.path.abspath(filepath)
     filepath_pdf = f'{filepath_xls[:-3]}pdf'
@@ -92,25 +92,24 @@ def create_raport(plate: str = 'XX XXXXX', model: str = 'Brand Model', first_day
     if rows_needed <= 0:
         return 'err'
 
-    num_days = monthrange(year, month,)[1]
+    num_days = monthrange(year, month, )[1]
     dates = sorted(random.sample(range(1, num_days + 1), rows_needed))
 
     first_day_date = f"1.{month}.{year}"
     last_day_date = f"{num_days}.{month}.{year}"
 
-    sheet(  filepath = filepath, page=cfg['page'],
-            pages_needed= cfg['pages_needed'],
-            first_day_date= first_day_date,
-            last_day_date= last_day_date,
-            car_register_numbers = plate,
-            first_day_value = first_day_value,
-            month= month,
-            year = year,
-            rows_amount= rows_needed,
-            dates = dates,
-            distances = generate_distances(monthly_distance = km_needed, days_quantity = rows_needed),
-        )
+    sheet(filepath=filepath, page=cfg['page'],
+          pages_needed=cfg['pages_needed'],
+          first_day_date=first_day_date,
+          last_day_date=last_day_date,
+          car_register_numbers=plate,
+          first_day_value=first_day_value,
+          month=month,
+          year=year,
+          rows_amount=rows_needed,
+          dates=dates,
+          distances=generate_distances(monthly_distance=km_needed, days_quantity=rows_needed),
+          )
 
     excel_to_pdf(filepath_xls, filepath_pdf)
     xls_to_xlsx(filepath_xls, filepath_xlsx)
-

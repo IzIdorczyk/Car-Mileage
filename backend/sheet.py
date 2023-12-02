@@ -1,6 +1,7 @@
 import xlsxwriter
 
-#convert month number to text
+
+# convert month number to text
 def get_month_name(number):
     names = ['Styczeń',
              'Luty',
@@ -13,30 +14,32 @@ def get_month_name(number):
              'Wrzesień',
              'Październik',
              'Listopad',
-             'Grudzień  ',
+             'Grudzień',
              ]
-    return names[number-1]
+    return names[number - 1]
 
 
-#convert inch to cm
+# convert inch to cm
 def inch_to_cm(inch):
     return inch * 0.3937
 
 
-def sheet(filepath: str = None, paper: int = 9,  margin_left: float = 0.5, margin_right: float = 0.1, margin_top: float = 0.2, margin_bottom: float = 0, page: int = 1, pages_needed: int = 1, first_day_date: str = None,  last_day_date: str = None, car_register_numbers: str = None, first_day_value: int = None, month: int = None, year: int = None, rows_amount: int = None, start_at: int = 23, dates: list = [], distances: list = []):
-
+def sheet(filepath: str = None, paper: int = 9, margin_left: float = 0.5, margin_right: float = 0.1,
+          margin_top: float = 0.2, margin_bottom: float = 0, page: int = 1, pages_needed: int = 1,
+          first_day_date: str = None, last_day_date: str = None, car_register_numbers: str = None,
+          first_day_value: int = None, month: int = None, year: int = None, rows_amount: int = None, start_at: int = 23,
+          dates: list = [], distances: list = []):
     workbook = xlsxwriter.Workbook(filepath)
     worksheet = workbook.add_worksheet()
 
-
-   # set the paper type ( 9 = A4)
+    # set the paper type ( 9 = A4)
     worksheet.set_paper(paper)
-        
-    #set margins in inches
-    worksheet.set_margins(left= inch_to_cm(margin_left), right= inch_to_cm(margin_right), top= inch_to_cm(margin_top), bottom= inch_to_cm(margin_bottom))
 
+    # set margins in inches
+    worksheet.set_margins(left=inch_to_cm(margin_left), right=inch_to_cm(margin_right), top=inch_to_cm(margin_top),
+                          bottom=inch_to_cm(margin_bottom))
 
-    #columns size
+    # columns size
     worksheet.set_column_pixels('A:A', 39)
     worksheet.set_column_pixels('B:B', 28)
     worksheet.set_column_pixels('C:C', 42)
@@ -62,15 +65,13 @@ def sheet(filepath: str = None, paper: int = 9,  margin_left: float = 0.5, margi
     worksheet.set_column_pixels('W:W', 30)
     worksheet.set_column_pixels('X:X', 65)
 
-
-    #rows size
+    # rows size
     row5 = (6, 11, 13, 15, 88, 90)
     row14 = (91, 92, 93)
     row15 = (0, 2, 3, 4, 5, 7, 8, 12, 14, 16, 17, 18, 19, 20, 21, 84, 85, 86, 87, 89)
     worksheet.set_row_pixels(1, 13)
     worksheet.set_row_pixels(9, 10)
     worksheet.set_row_pixels(10, 21)
-
 
     for x in range(22, 84):
         worksheet.set_row_pixels(x, 0)
@@ -84,158 +85,157 @@ def sheet(filepath: str = None, paper: int = 9,  margin_left: float = 0.5, margi
     for x in row15:
         worksheet.set_row_pixels(x, 15)
 
-
-    #formating sets
+    # formating sets
     arial6 = workbook.add_format({
         'font_name': "Arial",
         'font_size': 6,
-        })
+    })
 
     arial6lt = workbook.add_format({
         'font_name': "Arial",
         'font_size': 6,
-        'align' : 'left',
-        'valign' : 'top',
-        })
+        'align': 'left',
+        'valign': 'top',
+    })
 
     arial6ltstr = workbook.add_format({
         'font_name': "Arial",
         'font_size': 6,
-        'font_strikeout' : 1,
-        })
+        'font_strikeout': 1,
+    })
 
     arial6ltsup = workbook.add_format({
         'font_name': "Arial",
         'font_size': 6,
-        'font_script' : 1,
-        })
+        'font_script': 1,
+    })
 
     arial7 = workbook.add_format({
         'font_name': "Arial",
         'font_size': 7,
-        })
+    })
 
     arial7t = workbook.add_format({
         'font_name': "Arial",
         'font_size': 7,
-        'valign' : 'top',
-        })
+        'valign': 'top',
+    })
 
     arial7sup = workbook.add_format({
         'font_name': "Arial",
         'font_size': 7,
-        'font_script' : 1
-        })
+        'font_script': 1
+    })
 
     arial8 = workbook.add_format({
         'font_name': "Arial",
         'font_size': 8
-        })
+    })
 
     arial8t = workbook.add_format({
         'font_name': "Arial",
         'font_size': 8,
-        'valign' : 'top'
-        })
+        'valign': 'top'
+    })
 
     arial8str = workbook.add_format({
         'font_name': "Arial",
         'font_size': 8,
-        'font_strikeout' : 1
-        })
+        'font_strikeout': 1
+    })
 
     arial8sup = workbook.add_format({
         'font_name': "Arial",
         'font_size': 8,
-        'font_script' : 1
-        })
+        'font_script': 1
+    })
 
     arial8ct = workbook.add_format({
         'font_name': "Arial",
         'font_size': 8,
-        })
+    })
 
     arial8c = workbook.add_format({
         'font_name': "Arial",
         'font_size': 8,
-        'align' : 'center'
-        })
+        'align': 'center'
+    })
 
     arial8cn = workbook.add_format({
         'font_name': "Arial",
         'font_size': 8,
-        'align' : 'center',
-        'valign' : 'top',
-        'num_format' : 3
-        })
+        'align': 'center',
+        'valign': 'top',
+        'num_format': 3
+    })
 
     arial8border = workbook.add_format({
         'font_name': "Arial",
         'font_size': 8,
-        'border' : 1
-        })
+        'border': 1
+    })
 
     arial8borderc = workbook.add_format({
         'font_name': "Arial",
         'font_size': 8,
-        'valign' : 'vcenter',
-        'align' : 'center',
-        'border' : 1
-        })
+        'valign': 'vcenter',
+        'align': 'center',
+        'border': 1
+    })
 
     arial8bordercw = workbook.add_format({
         'font_name': "Arial",
         'font_size': 8,
-        'valign' : 'vcenter',
-        'align' : 'center',
-        'border' : 1,
+        'valign': 'vcenter',
+        'align': 'center',
+        'border': 1,
         'text_wrap': True,
-        })
+    })
 
     arial8bordercn = workbook.add_format({
         'font_name': "Arial",
         'font_size': 8,
-        'valign' : 'vcenter',
-        'align' : 'center',
-        'border' : 1,
-        'num_format' : 3
-        })
+        'valign': 'vcenter',
+        'align': 'center',
+        'border': 1,
+        'num_format': 3
+    })
 
     arial8borderdiag = workbook.add_format({
         'font_name': "Arial",
         'font_size': 8,
         'diag_type': 2,
-        'border' : 1
-        })
+        'border': 1
+    })
 
     arial7bold = workbook.add_format({
         'font_name': "Arial",
         'font_size': 7,
         'bold': True
-        })
+    })
 
     arial8bold = workbook.add_format({
         'font_name': "Arial",
         'font_size': 8,
         'bold': True
-        })
+    })
 
     arial8boldl = workbook.add_format({
         'font_name': "Arial",
         'font_size': 8,
         'bold': True,
-        'valign' : 'top',
-        'align' : 'left'
-        })
+        'valign': 'top',
+        'align': 'left'
+    })
 
     arial8boldln = workbook.add_format({
         'font_name': "Arial",
         'font_size': 8,
         'bold': True,
-        'align' : 'center',
-        'valign' : 'top',
-        'num_format' : 3
-        })
+        'align': 'center',
+        'valign': 'top',
+        'num_format': 3
+    })
 
     arial8boldcenter = workbook.add_format({
         'font_name': "Arial",
@@ -243,9 +243,9 @@ def sheet(filepath: str = None, paper: int = 9,  margin_left: float = 0.5, margi
         'bold': True,
         'center_across': True,
         'text_wrap': True,
-        'valign' : 'vcenter',
-        'align' : 'center'
-        })
+        'valign': 'vcenter',
+        'align': 'center'
+    })
 
     arial12boldcenter = workbook.add_format({
         'font_name': "Arial",
@@ -253,9 +253,9 @@ def sheet(filepath: str = None, paper: int = 9,  margin_left: float = 0.5, margi
         'bold': True,
         'center_across': True,
         'text_wrap': True,
-        'valign' : 'vcenter',
-        'align' : 'center'
-        })
+        'valign': 'vcenter',
+        'align': 'center'
+    })
 
     arialn8boldcenter = workbook.add_format({
         'font_name': "Arial Narrow",
@@ -263,9 +263,9 @@ def sheet(filepath: str = None, paper: int = 9,  margin_left: float = 0.5, margi
         'bold': True,
         'center_across': True,
         'text_wrap': True,
-        'valign' : 'vcenter',
-        'align' : 'center'
-        })
+        'valign': 'vcenter',
+        'align': 'center'
+    })
 
     arialn8boldcenterb = workbook.add_format({
         'font_name': "Arial Narrow",
@@ -273,10 +273,10 @@ def sheet(filepath: str = None, paper: int = 9,  margin_left: float = 0.5, margi
         'bold': True,
         'center_across': True,
         'text_wrap': True,
-        'valign' : 'vcenter',
-        'align' : 'center',
-        'border' : 1
-        })
+        'valign': 'vcenter',
+        'align': 'center',
+        'border': 1
+    })
 
     arialn8boldcentsup = workbook.add_format({
         'font_name': "Arial Narrow",
@@ -284,10 +284,10 @@ def sheet(filepath: str = None, paper: int = 9,  margin_left: float = 0.5, margi
         'bold': True,
         'center_across': True,
         'text_wrap': True,
-        'valign' : 'vcenter',
-        'align' : 'center',
-        'font_script' : 1
-        })
+        'valign': 'vcenter',
+        'align': 'center',
+        'font_script': 1
+    })
 
     arialn8boldcentstr = workbook.add_format({
         'font_name': "Arial Narrow",
@@ -295,23 +295,20 @@ def sheet(filepath: str = None, paper: int = 9,  margin_left: float = 0.5, margi
         'bold': True,
         'center_across': True,
         'text_wrap': True,
-        'valign' : 'vcenter',
-        'align' : 'center',
-        'font_strikeout' : 1
-        })
+        'valign': 'vcenter',
+        'align': 'center',
+        'font_strikeout': 1
+    })
 
     border = workbook.add_format({
-        'border' : 1
-        })
+        'border': 1
+    })
 
     bottomBorder = workbook.add_format({
-        'bottom' : 1
-        })
+        'bottom': 1
+    })
 
-
-
-
-    #top of the register
+    # top of the register
 
     worksheet.write('A1', 'Dane podatnika:', arial8)
     worksheet.write('X1', 'strona ' + f"{page}/{pages_needed}", arial8)
@@ -319,7 +316,7 @@ def sheet(filepath: str = None, paper: int = 9,  margin_left: float = 0.5, margi
                                 arial6lt, '(',
                                 arial6ltstr, 'nazwisko, imię',
                                 arial6lt, '/ nazwa',
-                                arial6ltsup, '1)', 
+                                arial6ltsup, '1)',
                                 arial6lt, 'adres',
                                 arial6lt)
     worksheet.write('A3', 'prowadzonej działalności, NIP)', arial6lt)
@@ -356,7 +353,6 @@ def sheet(filepath: str = None, paper: int = 9,  margin_left: float = 0.5, margi
                                 arial8, f"{get_month_name(month)} {year}",
                                 arial8t)
 
-
     # top of the table
     worksheet.merge_range('A17:A22', '', arialn8boldcenterb)
     worksheet.merge_range('B17:C22', '', arialn8boldcenterb)
@@ -370,9 +366,9 @@ def sheet(filepath: str = None, paper: int = 9,  margin_left: float = 0.5, margi
     worksheet.write('A17', 'Nr\nkolejny\nwpisu', arialn8boldcenterb)
     worksheet.write_rich_string('B17',
                                 arialn8boldcenterb, 'Data wyjazdu/\nudostępnienia\npojazdu',
-                                arialn8boldcentsup, '2)', 
+                                arialn8boldcentsup, '2)',
                                 arialn8boldcenterb)
-    worksheet.write_rich_string('D17', 
+    worksheet.write_rich_string('D17',
                                 arialn8boldcenterb, 'Opis trasy\n',
                                 arialn8boldcenterb, 'wyjazdu\n',
                                 arialn8boldcenterb, '(skąd-dokąd)',
@@ -405,36 +401,35 @@ def sheet(filepath: str = None, paper: int = 9,  margin_left: float = 0.5, margi
                                 arialn8boldcentsup, '2)',
                                 arialn8boldcenterb)
 
-
     # rows
     for row_a in range(rows_amount):
 
-        row = start_at + ( row_a * 2 )
+        row = start_at + (row_a * 2)
         if row_a == 0:
             str_row7 = '=C15'
         else:
             str_row7 = '=W' + str(row - 1)
         str_row8 = '=W' + str(row) + '+Q' + str(row)
 
-        #column creator
+        # column creator
 
         col = [
-        #col1 = 
-        'A' + str(row) + ':' + 'A' + str(row + 1),
-        # col2 = 
-        'B' + str(row) + ':' + 'C' + str(row + 1),
-        # col3 = 
-        'D' + str(row) + ':' + 'I' + str(row + 1),
-        # col4 = 
-        'J' + str(row) + ':' + 'P' + str(row + 1),
-        # col5 = 
-        'Q' + str(row) + ':' + 'S' + str(row + 1),
-        # col6 = 
-        'T' + str(row) + ':' + 'V' + str(row + 1),
-        # col7 = 
-        'W' + str(row) + ':' + 'X' + str(row),
-        # col8 = 
-        'W' + str(row + 1) + ':' + 'X' + str(row + 1) ]
+            # col1 =
+            'A' + str(row) + ':' + 'A' + str(row + 1),
+            # col2 =
+            'B' + str(row) + ':' + 'C' + str(row + 1),
+            # col3 =
+            'D' + str(row) + ':' + 'I' + str(row + 1),
+            # col4 =
+            'J' + str(row) + ':' + 'P' + str(row + 1),
+            # col5 =
+            'Q' + str(row) + ':' + 'S' + str(row + 1),
+            # col6 =
+            'T' + str(row) + ':' + 'V' + str(row + 1),
+            # col7 =
+            'W' + str(row) + ':' + 'X' + str(row),
+            # col8 =
+            'W' + str(row + 1) + ':' + 'X' + str(row + 1)]
 
         worksheet.set_row_pixels((row - 1), 13)
         worksheet.set_row_pixels(row, 13)
@@ -444,7 +439,7 @@ def sheet(filepath: str = None, paper: int = 9,  margin_left: float = 0.5, margi
 
         worksheet.write(col[0], row_a + 1, arial8borderc)
         worksheet.write(col[1], f'{dates[row_a]}.{month}.{year}', arial8borderc)
-        worksheet.write_rich_string(col[2], 
+        worksheet.write_rich_string(col[2],
                                     arial8bordercw, 'Gdańsk\n',
                                     arial7, '(jazda po mieście)',
                                     arial8bordercw)
@@ -453,7 +448,6 @@ def sheet(filepath: str = None, paper: int = 9,  margin_left: float = 0.5, margi
         worksheet.write(col[5], '', arial8borderc)
         worksheet.write(col[6], str_row7, arial8bordercn)
         worksheet.write(col[7], str_row8, arial8bordercn)
-
 
     # end of the table
     worksheet.write('A85', 'UWAGA:', arial7bold)
@@ -468,7 +462,6 @@ def sheet(filepath: str = None, paper: int = 9,  margin_left: float = 0.5, margi
     worksheet.write('M87', 'Razem', arial8bold)
     worksheet.merge_range('Q87:S87', '=SUM(Q85:S86)', arial8borderc)
     worksheet.merge_range('T85:X87', '', arial8borderdiag)
-
 
     # footer of register
     worksheet.write('A90', 'Stan licznika', arial8t)
@@ -488,11 +481,13 @@ def sheet(filepath: str = None, paper: int = 9,  margin_left: float = 0.5, margi
                                 arial7t)
     worksheet.write_rich_string('A93',
                                 arial7sup, '2)',
-                                arial7, ' dotyczy sytuacji, gdy pojazd samochodowy jest udostępniany osobie niebędącej pracownikiem podatnika,',
+                                arial7,
+                                ' dotyczy sytuacji, gdy pojazd samochodowy jest udostępniany osobie niebędącej pracownikiem podatnika,',
                                 arial7t)
     worksheet.write_rich_string('A94',
                                 arial7sup, '3)',
-                                arial7, ' nie wypełnia się, gdy pojazd samochodowy jest udostępniany osobie niebędącej pracownikiem podatnika.',
+                                arial7,
+                                ' nie wypełnia się, gdy pojazd samochodowy jest udostępniany osobie niebędącej pracownikiem podatnika.',
                                 arial7t)
 
     workbook.close()

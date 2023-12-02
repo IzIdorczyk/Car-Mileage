@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from datetime import datetime
 
+
 class Mileage(BaseModel):
     plate: str
     year: int
@@ -16,6 +17,7 @@ class Mileage(BaseModel):
                 'mileage': 68358
             }
         }
+
 
 class Car(BaseModel):
     model: str

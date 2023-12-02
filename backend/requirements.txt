@@ -1,15 +1,5 @@
-fastapi == 0.65.1
-
-uvicorn == 0.14.0
-
-motor == 2.4.0
-
-xlsxwriter == 3.0.8
-
-pyyaml == 6.0
-
-pywin32 == 306
-
-pypiwin32 == 223
-
-pymongo[srv]==3.11.0
+fastapi
+motor
+xlsxwriter
+pyyaml
+pydantic

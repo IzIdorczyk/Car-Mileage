@@ -14,7 +14,7 @@ from database import (
     update_mileage,
     remove_mileage,
     find_all_mileages_in_month)
-from raport_creator import create_raport
+from raport_creator import create_report
 
 # App object
 app = FastAPI()
@@ -23,16 +23,16 @@ origins = ['http://localhost:3000']
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins = origins,
-    allow_credentials = True,
-    allow_methods = ["*"],
-    allow_headers = ["*"]
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"]
 )
 
 
 @app.get('/')
 def read_root():
-    return {"Hello" : "World"}
+    return {"Hello": "World"}
 
 
 @app.get("/cars", tags=['Car'])
@@ -61,7 +61,7 @@ async def post_car(car: Car):
 
 
 @app.put("/car/{plate}", response_model=Car, tags=['Car'])
-async def put_car(plate:str, new_plate:str):
+async def put_car(plate: str, new_plate: str):
     response = await update_car(plate, new_plate)
     if response:
         return response
@@ -75,21 +75,20 @@ async def delete_car(plate):
         return f"Succesfully deleted car with {plate} plate numbers!"
     raise HTTPException(404, f"Car with {plate} plate number doesn't exist in our database")
 
-###
-### Mileages
-###
 
+# Mileages
 @app.get("/cars/mileages", tags=['Mileages'])
 async def get_all_mileages():
     return await fetch_all_mileages()
 
 
 @app.get("/car/{plate}/{year}/{month}/mileage", response_model=Mileage, tags=['Mileages'])
-async def get_one_mileage(plate:str, year:int, month:int):
+async def get_one_mileage(plate: str, year: int, month: int):
     response = await fetch_one_mileage(plate, year, month)
     if response:
         return response
-    raise HTTPException(404, f"Mileage in {month}.{year} from car with {plate} plate number doesn't exist in our database")
+    raise HTTPException(404,
+                        f"Mileage in {month}.{year} from car with {plate} plate number doesn't exist in our database")
 
 
 @app.get("/car/{plate}/mileages", tags=['Mileages'])
@@ -103,7 +102,8 @@ async def get_mileages_by_plate(plate):
 @app.post("/car/{plate}/mileage", response_model=Mileage, tags=['Mileages'])
 async def post_mileage(mileage: Mileage):
     if await fetch_one_mileage(mileage.plate, mileage.year, mileage.month):
-        raise HTTPException(409, f"Recodr for car with {mileage.plate} plate number in {mileage.month}.{mileage.year} already exist in our database")
+        raise HTTPException(409,
+                            f"Recodr for car with {mileage.plate} plate number in {mileage.month}.{mileage.year} already exist in our database")
     response = await create_mileage(mileage.dict())
     if response:
         return response
@@ -111,35 +111,36 @@ async def post_mileage(mileage: Mileage):
 
 
 @app.put("/car/{plate}/{year}/{month}", response_model=Mileage, tags=['Mileages'])
-async def put_mileage(plate:str, year:int, month:int, mileage:int):
+async def put_mileage(plate: str, year: int, month: int, mileage: int):
     response = await update_mileage(plate, year, month, mileage)
     if response:
         return response
-    raise HTTPException(404, f"Mileage in {month}.{year} from car with {plate} plate number doesn't exist in our database")
+    raise HTTPException(404,
+                        f"Mileage in {month}.{year} from car with {plate} plate number doesn't exist in our database")
 
 
 @app.delete("/car/{plate}/{year}/{month}", tags=['Mileages'])
-async def delete_mileage(plate:str, year:int, month:int):
+async def delete_mileage(plate: str, year: int, month: int):
     response = await remove_mileage(plate, year, month)
     if response:
         return f"Succesfully deleted mileage in {month}.{year} from car with {plate} plate numbers!"
-    raise HTTPException(404, f"Mileage in {month}.{year} from car with {plate} number plate doesn't exist in our database")
+    raise HTTPException(404,
+                        f"Mileage in {month}.{year} from car with {plate} number plate doesn't exist in our database")
 
 
-###
-### Date
-###
+# Date
 @app.get("/date/{year}/{month}", tags=['Date'])
-async def get_mileages_by_date(month:int, year:int):
+async def get_mileages_by_date(month: int, year: int):
     response = await find_all_mileages_in_month(year, month)
     if response:
         return response
     raise HTTPException(404, f"We don't have any mileage in {month}.{year}")
 
+
 @app.get("/date/{year}/{month}/generate", tags=['Date'])
-async def generate_mileages_by_date(month:int, year:int):
+async def generate_mileages_by_date(month: int, year: int):
     now = await find_all_mileages_in_month(year, month)
-    prev = await find_all_mileages_in_month(year, month-1)
+    prev = await find_all_mileages_in_month(year, month - 1)
 
     new = []
     for n in now:
@@ -148,13 +149,11 @@ async def generate_mileages_by_date(month:int, year:int):
                 if p[0] == n[0]:
                     new.append([n[0], p[1], n[1]])
 
-
     for x in new:
-
         car_register_numbers = x[0]
         first_day_value = x[1]
         last_day_value = x[2]
         car = await get_car_by_plate(car_register_numbers)
         car_name = car['model']
-        create_raport(plate =car_register_numbers, model = car_name, first_day_value = first_day_value, last_day_value = last_day_value, month = month, year = year)
-
+        create_report(plate=car_register_numbers, model=car_name, first_day_value=first_day_value,
+                      last_day_value=last_day_value, month=month, year=year)
