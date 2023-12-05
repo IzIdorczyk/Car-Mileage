@@ -6,6 +6,10 @@ import {AppComponent} from './app.component';
 import {CarComponent} from './car/car.component';
 import {HttpClientModule} from "@angular/common/http";
 import {MenuComponent} from './menu/menu.component';
+import {FormsModule} from "@angular/forms";
+import 'flowbite';
+import {AddCarButtonComponent} from "./car/add-car-button/add-car-button.component";
+import {CarListComponent} from "./car/car-list/car-list.component";
 
 @NgModule({
   declarations: [
@@ -16,12 +20,16 @@ import {MenuComponent} from './menu/menu.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule,
+    AddCarButtonComponent,
+    CarListComponent,
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule implements OnInit {
+
   ngOnInit(): void {
 
     // On page load or when changing themes, best to add inline in `head` to avoid FOUC
@@ -33,3 +41,5 @@ export class AppModule implements OnInit {
 
   }
 }
+
+
