@@ -1,5 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from model import Car, Mileage
 from database import (
     fetch_one_car,
@@ -19,7 +20,7 @@ from raport_creator import create_report
 # App object
 app = FastAPI()
 
-origins = ['http://localhost:3000']
+origins = ['*']
 
 app.add_middleware(
     CORSMiddleware,
@@ -32,7 +33,8 @@ app.add_middleware(
 
 @app.get('/')
 def read_root():
-    return {"Hello": "World"}
+    data = {"Hello": "World"}
+    return data
 
 
 @app.get("/cars", tags=['Car'])

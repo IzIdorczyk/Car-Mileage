@@ -2,7 +2,7 @@
 Full stack poject using
 * FastAPI
 * MongoDB
-* ReactJS
+* Angular17
 
 This App will be creating PDF mileage sheets
 
