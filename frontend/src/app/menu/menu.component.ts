@@ -6,16 +6,5 @@ import {Component} from '@angular/core';
   styleUrls: ['./menu.component.scss']
 })
 export class MenuComponent {
-  links = [
-    {name: 'Auta', link: '/auta'},
-    {name: 'Przebieg', link: '/przebieg'},
-    {name: 'Placeholder', link: '/auta'}
-  ];
-
-  selectedIndex = 0;
-
-  setActiveClass(index: number){
-    this.selectedIndex = index;
-  }
 
 }
