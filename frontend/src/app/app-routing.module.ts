@@ -5,7 +5,7 @@ import {CarsComponent} from "./pages/cars/cars.component";
 
 const routes: Routes = [
     {path: "", component: DashboardComponent},
-    {path: "car", component: CarsComponent}];
+    {path: "cars", component: CarsComponent}];
 
 @NgModule({
     imports: [RouterModule.forRoot(routes)],
