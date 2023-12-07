@@ -2,32 +2,28 @@ import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
-import {CarComponent} from './car/car.component';
 import {HttpClientModule} from "@angular/common/http";
-import {MenuComponent} from './menu/menu.component';
 import {FormsModule} from "@angular/forms";
 import 'flowbite';
-import {AddCarButtonComponent} from "./car/add-car-button/add-car-button.component";
-import {CarListComponent} from "./car/car-list/car-list.component";
-import {DarkmodeToggleComponent} from "./menu/darkmode-toggle/darkmode-toggle.component";
-import {RouterLinksComponent} from "./menu/router-links/router-links.component";
+import {NavComponent} from "./components/nav/nav.component";
+import {CarAddButtonComponent} from "./components/cars/car-add-button/car-add-button.component";
+import {NavDarkmodeComponent} from "./components/nav/nav-darkmode/nav-darkmode.component";
+import {RouterModule} from "@angular/router";
 
 @NgModule({
     declarations: [
         AppComponent,
-        CarComponent,
-        MenuComponent
     ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        HttpClientModule,
-        FormsModule,
-        AddCarButtonComponent,
-        CarListComponent,
-        DarkmodeToggleComponent,
-        RouterLinksComponent,
-    ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule,
+    FormsModule,
+    CarAddButtonComponent,
+    NavDarkmodeComponent,
+    RouterModule,
+    NavComponent,
+  ],
     providers: [],
     bootstrap: [AppComponent]
 })

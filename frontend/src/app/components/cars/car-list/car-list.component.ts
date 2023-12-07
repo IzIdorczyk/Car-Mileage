@@ -1,24 +1,21 @@
 import {Component, OnInit} from '@angular/core';
 import {NgForOf} from "@angular/common";
-import {CarService} from "../../service/car.service";
-import {Observable} from "rxjs";
-import {Cars} from "../../interface/cars";
-
+import {CarsService} from "../../../services/cars.service";
 
 @Component({
   selector: 'app-car-list',
   standalone: true,
-    imports: [
-        NgForOf
-    ],
+  imports: [
+    NgForOf
+  ],
   templateUrl: './car-list.component.html',
   styleUrl: './car-list.component.scss'
 })
-export class CarListComponent implements OnInit {
 
+export class CarListComponent implements OnInit {
   cars: any = [];
 
-  constructor(private carService: CarService) {
+  constructor(private carService: CarsService) {
   }
 
   onGetCars(): any {
@@ -28,9 +25,8 @@ export class CarListComponent implements OnInit {
     );
   }
 
-
-
   ngOnInit(): void {
     this.onGetCars();
   }
 }
+
