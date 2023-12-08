@@ -41,25 +41,40 @@
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let car of cars"
-        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-      <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-        {{car.model}}
-      </th>
-      <td class="px-6 py-4 font-medium">
-        {{car.plate}}
-      </td>
-      <td class="px-6 py-4">
-        Grudzień 2023
-      </td>
-      <td class="px-6 py-4">
-        <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline mr-2">XML</a>
-        <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">PDF</a>
-      </td>
-      <td class="px-6 py-4 text-right">
-        <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-      </td>
-    </tr>
+      @for (car of cars;track car.name) {
+        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+          <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+            {{ car.model }}
+          </th>
+          <td class="px-6 py-4 font-medium">
+            {{ car.plate }}
+          </td>
+          <td class="px-6 py-4">
+            Grudzień 2023
+          </td>
+          <td class="px-6 py-4">
+            <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline mr-2">XML</a>
+            <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">PDF</a>
+          </td>
+          <td class="px-6 py-4 text-right">
+            <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+          </td>
+        </tr>
+      } @empty {
+        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+          <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+            Brak pojazdów
+          </th>
+          <td class="px-6 py-4 font-medium">
+          </td>
+          <td class="px-6 py-4">
+          </td>
+          <td class="px-6 py-4">
+          </td>
+          <td class="px-6 py-4 text-right">
+          </td>
+        </tr>
+      }
     </tbody>
   </table>
 </div>
