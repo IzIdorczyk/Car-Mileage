@@ -14,7 +14,7 @@ from database import (
     create_mileage,
     update_mileage,
     remove_mileage,
-    find_all_mileages_in_month)
+    find_all_mileages_in_month, car_get_last_record_per_model)
 from raport_creator import create_report
 
 # App object
@@ -40,6 +40,11 @@ def read_root():
 @app.get("/cars", tags=['Car'])
 async def get_cars():
     return await fetch_all_cars()
+
+
+@app.get("/last_record_per_model", tags=['Car'])
+async def get_last_record_per_model():
+    return await car_get_last_record_per_model()
 
 
 @app.get("/car/{plate}", response_model=Car, tags=['Car'])

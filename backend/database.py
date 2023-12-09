@@ -79,3 +79,45 @@ async def find_all_mileages_in_month(year, month):
             mils.append([car.plate, mil['mileage']])
             # mils.append({car.plate: mil['mileage']})
     return mils
+
+
+pipeline = [
+    {
+        "$lookup": {
+            "from": "mileage",
+            "localField": "plate",
+            "foreignField": "plate",
+            "as": "mileage_data"
+        }
+    },
+    {
+        "$unwind": "$mileage_data"
+    },
+    {
+        "$sort": {
+            "mileage_data.year": -1,
+            "mileage_data.month": -1
+            # Add more fields if needed for a more precise sort order
+        }
+    },
+    {
+        "$group": {
+            "_id": "$model",
+            "_idCar": {"$first": "$_id"},
+            "model": {"$first": "$model"},
+            "plate": {"$first": "$plate"},
+            "mileage": {"$first": "$mileage_data.mileage"},
+            "month": {"$first": "$mileage_data.month"},
+            "year": {"$first": "$mileage_data.year"}
+        }
+    },
+    {
+        "$project": {
+            "_idCar": 0
+        }
+    }
+]
+
+
+async def car_get_last_record_per_model():
+    return await car_collection.aggregate(pipeline).to_list(length=None)
