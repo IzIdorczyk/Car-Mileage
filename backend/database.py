@@ -96,8 +96,9 @@ pipeline = [
     {
         "$sort": {
             "mileage_data.year": -1,
-            "mileage_data.month": -1
-            # Add more fields if needed for a more precise sort order
+            "mileage_data.month": -1,
+            "model": 1  # Sort model in ascending order (A-Z) nie działa...
+
         }
     },
     {

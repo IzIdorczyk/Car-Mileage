@@ -11,7 +11,7 @@ export class CarsService {
   }
 
   getCars(): Observable<Cars[]> {
-    return this.http.get<Cars[]>('http://127.0.0.1:8000/cars');
+    return this.http.get<Cars[]>('http://127.0.0.1:8000/last_record_per_model');
   }
 
   postCar(car: Observable<Cars>): Subscription{
