@@ -85,36 +85,45 @@ pipeline = [
     {
         "$lookup": {
             "from": "mileage",
-            "localField": "plate",
-            "foreignField": "plate",
+            "let": {"plate": "$plate"},
+            "pipeline": [
+                {
+                    "$match": {
+                        "$expr": {"$eq": ["$plate", "$$plate"]}
+                    }
+                },
+                {
+                    "$sort": {
+                        "year": -1,
+                        "month": -1
+                    }
+                },
+                {
+                    "$limit": 1
+                }
+            ],
             "as": "mileage_data"
         }
     },
     {
-        "$unwind": "$mileage_data"
-    },
-    {
-        "$sort": {
-            "mileage_data.year": -1,
-            "mileage_data.month": -1,
-            "model": 1  # Sort model in ascending order (A-Z) nie działa...
-
+        "$unwind": {
+            "path": "$mileage_data",
+            "preserveNullAndEmptyArrays": True
         }
     },
     {
-        "$group": {
-            "_id": "$model",
-            "_idCar": {"$first": "$_id"},
-            "model": {"$first": "$model"},
-            "plate": {"$first": "$plate"},
-            "mileage": {"$first": "$mileage_data.mileage"},
-            "month": {"$first": "$mileage_data.month"},
-            "year": {"$first": "$mileage_data.year"}
+        "$sort": {
+            "model": 1  # Sort model in ascending order (A-Z)
         }
     },
     {
         "$project": {
-            "_idCar": 0
+            "_id": 0,
+            "model": 1,
+            "plate": 1,
+            "mileage": "$mileage_data.mileage" if "$mileage_data" in "$mileage_data" else None,
+            "month": "$mileage_data.month" if "$mileage_data" in "$mileage_data" else None,
+            "year": "$mileage_data.year" if "$mileage_data" in "$mileage_data" else None
         }
     }
 ]

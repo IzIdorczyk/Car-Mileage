@@ -62,10 +62,20 @@
             {{ car.plate }}
           </td>
           <td class="px-6 py-4">
-            {{ car.month}} {{car.year}}
+            {{ car.year }}
+            @if (car.month) {
+              {{ car.month }}
+            } @else {
+              No record data
+            }
           </td>
           <td class="px-6 py-4">
-            {{car.mileage}}
+            @if (car.mileage) {
+              {{ car.mileage }}
+            } @else {
+              No record data
+            }
+
           </td>
           <td class="px-6 py-4">
             <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline mr-2">XML</a>
