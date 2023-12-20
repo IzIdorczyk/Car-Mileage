@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import {Component, EventEmitter, Output} from '@angular/core';
 import {CarAddFormComponent} from "../car-add-form/car-add-form.component";
+import {Cars} from "../../../interfaces/cars";
 
 @Component({
   selector: 'app-car-add-button',
@@ -12,4 +13,10 @@ import {CarAddFormComponent} from "../car-add-form/car-add-form.component";
 })
 
 export class CarAddButtonComponent {
+
+  @Output() addCar: EventEmitter<Cars> = new EventEmitter<Cars>();
+  onAddCar(car: Cars) {
+    this.addCar.emit(car);
+  }
+
 }

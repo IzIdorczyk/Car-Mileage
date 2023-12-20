@@ -1,6 +1,6 @@
-import {Component, OnInit} from '@angular/core';
-import {DatePipe, formatDate, NgForOf} from "@angular/common";
-import {CarsService} from "../../../services/cars.service";
+import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {DatePipe, NgForOf} from "@angular/common";
+import {RecordPerModel} from "../../../interfaces/record-per-model";
 
 @Component({
   selector: 'app-car-list',
@@ -10,26 +10,17 @@ import {CarsService} from "../../../services/cars.service";
     DatePipe
   ],
   templateUrl: './car-list.component.html',
-  styleUrl: './car-list.component.scss'
+  styleUrl: './car-list.component.scss',
 })
 
-export class CarListComponent implements OnInit {
-  cars: any = [];
+export class CarListComponent {
 
-  constructor(private carService: CarsService) {
+  @Input() records: RecordPerModel[] = [];
+
+  @Output() deleteCar: EventEmitter<string> = new EventEmitter<string>();
+
+  onDeleteCar(plate: string) {
+    this.deleteCar.emit(plate);
   }
-
-  onGetCars(): any {
-    this.carService.getCars().subscribe((response) => {
-        this.cars = response;
-      }
-    );
-  }
-
-  ngOnInit(): void {
-    this.onGetCars();
-  }
-
-  protected readonly formatDate = formatDate;
 }
 

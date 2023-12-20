@@ -30,3 +30,22 @@ class Car(BaseModel):
                 'plate': 'GD 229TY'
             }
         }
+
+
+# class LastRecordPerModel(BaseModel):
+#     model: str
+#     plate: str
+#     mileage: int
+#     month: int
+#     year: int
+#
+#     class Config:
+#         schema_extra = {
+#             'example': {
+#                 "model": "Skoda Scala",
+#                 "plate": "GD448XT",
+#                 "mileage": 36001,
+#                 "month": 11,
+#                 "year": 2023
+#             }
+#         }

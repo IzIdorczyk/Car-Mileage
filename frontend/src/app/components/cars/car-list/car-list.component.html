@@ -53,26 +53,32 @@
     </tr>
     </thead>
     <tbody>
-      @for (car of cars;track car.name) {
+      @for (record of records;track record.plate) {
         <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
           <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-            {{ car.model }}
+            {{ record.model }}
           </th>
           <td class="px-6 py-4 font-medium">
-            {{ car.plate }}
+            {{ record.plate }}
           </td>
           <td class="px-6 py-4">
-            {{ car?.year ?? 'No record data' }} {{ car.month }}
+            {{ record?.year ?? 'No record data' }} {{ record.month }}
           </td>
           <td class="px-6 py-4">
-            {{ car?.mileage ?? 'No record data' }}
+            {{ record?.mileage ?? 'No record data' }}
           </td>
           <td class="px-6 py-4">
             <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline mr-2">XML</a>
             <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">PDF</a>
           </td>
+          <td class="text-right">
+            <button (click)="onDeleteCar(record.plate)" type="button"
+                    class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">
+              DELETE
+            </button>
+          </td>
           <td class="px-6 py-4 text-right">
-            <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+            <a class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
           </td>
         </tr>
       } @empty {
@@ -81,6 +87,8 @@
             Brak pojazdów
           </th>
           <td class="px-6 py-4 font-medium">
+          </td>
+          <td class="px-6 py-4">
           </td>
           <td class="px-6 py-4">
           </td>
