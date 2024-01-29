@@ -17,7 +17,6 @@ export class RouterLinksComponent {
   links = [
     {name: 'Home', link: ''},
     {name: 'Auta', link: '/cars'},
-    {name: 'Przebieg', link: '/mileages'},
 
   ];
 

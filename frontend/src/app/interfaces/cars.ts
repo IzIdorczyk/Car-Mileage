@@ -1,4 +1,4 @@
 export interface Cars {
-  model: string
+  model: string,
   plate: string
 }

@@ -1,4 +1,4 @@
-<form #carFrom="ngForm" (ngSubmit)="onAddCar(carFrom.value)" class="max-w-xl mx-auto m-4">
+<form #carFrom="ngForm" (ngSubmit)="onAddCar(carFrom.value); carFrom.onReset()" class="max-w-xl mx-auto m-4">
   <div class="mb-5">
     <label for="model" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nazwa pojazdu</label>
     <input ngModel name="model" type="text" id="model"

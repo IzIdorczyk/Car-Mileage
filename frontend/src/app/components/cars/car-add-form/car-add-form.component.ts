@@ -15,8 +15,6 @@ import {Cars} from "../../../interfaces/cars";
 })
 export class CarAddFormComponent {
 
-
-
   @Output() addCar: EventEmitter<Cars> = new EventEmitter<Cars>();
 
   onAddCar(car: Cars) {

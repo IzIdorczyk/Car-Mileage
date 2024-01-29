@@ -28,7 +28,7 @@ export class CarsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.updateCarList();
+    this.reloadCars();
   }
 
   updateCarList(): void {

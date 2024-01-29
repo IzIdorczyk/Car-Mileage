@@ -42,11 +42,12 @@ async def get_cars():
     return await fetch_all_cars()
 
 
-@app.get("/last_record_per_model",  tags=['Car'])
+@app.get("/last_record_per_model", tags=['Car'])
 async def get_last_record_per_model():
     return await car_get_last_record_per_model()
 
 
+# TODO: zwraca object zamiast arraya
 @app.get("/car/{plate}", response_model=Car, tags=['Car'])
 async def get_car_by_plate(plate):
     response = await fetch_one_car(plate)
@@ -84,6 +85,7 @@ async def delete_car(plate):
 
 
 # Mileages
+# useless endpoint
 @app.get("/cars/mileages", tags=['Mileages'])
 async def get_all_mileages():
     return await fetch_all_mileages()
